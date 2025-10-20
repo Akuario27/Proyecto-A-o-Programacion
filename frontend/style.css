@@ -1,0 +1,273 @@
+/* ==========================================
+   🌿 Recetas de la Casa de Olivo - Estilo Pro + Dropdown (sin fondo blanco)
+   ========================================== */
+
+/* VARIABLES GLOBALES */
+:root {
+  --rojo-olivo: #c0392b;
+  --rojo-oscuro: #96281b;
+  --crema: #faf3e0;
+  --naranja-suave: #df0d0d;
+  --naranja-oscuro: #fc0000;
+  --texto: #2e2e2e;
+  --blanco: #ffffff;
+  --sombra: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --transicion: all 0.3s ease;
+}
+
+/* RESET Y BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background-color: var(--crema);
+  color: var(--texto);
+  line-height: 1.6;
+}
+
+/* ===============================
+   HEADER
+   =============================== */
+header {
+  background: linear-gradient(135deg, var(--rojo-olivo), var(--rojo-oscuro));
+  color: var(--blanco);
+  padding: 3rem 1rem 1rem 1rem;
+  text-align: center;
+  box-shadow: var(--sombra);
+  border-bottom: 5px solid #731010;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+header h2 {
+  font-size: 1.3rem;
+  font-weight: 300;
+  margin-top: 0.5rem;
+  color: #ffdddd;
+}
+
+/* ===============================
+   NAVEGACIÓN + DROPDOWN
+   =============================== */
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background: transparent; /* 🔥 Sin recuadro blanco */
+  border: none;
+  box-shadow: none;
+}
+
+/* Contenedor de cada botón principal */
+nav .menu-item {
+  position: relative;
+}
+
+/* Botones principales */
+nav > .menu-item > button {
+  background: linear-gradient(135deg, var(--naranja-suave), var(--naranja-oscuro));
+  color: var(--blanco);
+  border: none;
+  padding: 0.7rem 1.6rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transicion);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+nav > .menu-item > button:hover {
+  background: linear-gradient(135deg, var(--rojo-olivo), var(--rojo-oscuro));
+  transform: translateY(-3px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* SUBMENÚ */
+nav .submenu {
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--blanco);
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: var(--sombra);
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transicion);
+  min-width: 180px;
+  z-index: 10;
+}
+
+/* Mostrar submenu al pasar el mouse */
+nav .menu-item:hover .submenu {
+  opacity: 1;
+  visibility: visible;
+  top: 100%;
+}
+
+/* Estilo de cada opción del submenu */
+nav .submenu a {
+  display: block;
+  padding: 0.8rem 1rem;
+  color: var(--rojo-olivo);
+  text-decoration: none;
+  transition: var(--transicion);
+  font-weight: 500;
+  text-align: center;
+}
+
+nav .submenu a:hover {
+  background-color: var(--naranja-suave);
+  color: var(--blanco);
+  border-radius: 10px;
+}
+
+/* ===============================
+   SECCIÓN PRINCIPAL
+   =============================== */
+main {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+section.intro {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+section.intro p {
+  font-size: 1.1rem;
+  color: #444;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Tarjetas */
+.recetas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.receta-card {
+  background: var(--blanco);
+  border-radius: 15px;
+  box-shadow: var(--sombra);
+  overflow: hidden;
+  transition: var(--transicion);
+}
+
+.receta-card:hover {
+  transform: translateY(-6px);
+}
+
+.receta-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.receta-card-content {
+  padding: 1.2rem;
+  text-align: left;
+}
+
+.receta-card-content h3 {
+  color: var(--rojo-olivo);
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.receta-card-content p {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.receta-card-content button {
+  background-color: var(--naranja-suave);
+  color: var(--blanco);
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transicion);
+}
+
+.receta-card-content button:hover {
+  background-color: var(--rojo-olivo);
+}
+
+/* ===============================
+   FOOTER
+   =============================== */
+footer {
+  background-color: var(--rojo-oscuro);
+  color: var(--blanco);
+  padding: 3rem 1rem;
+  text-align: center;
+  border-top: 4px solid #731010;
+  box-shadow: inset 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+footer h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+footer p {
+  font-size: 0.95rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2rem;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav .submenu {
+    position: static;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    opacity: 1;
+    visibility: visible;
+    display: none;
+  }
+
+  nav .menu-item:hover .submenu {
+    display: block;
+  }
+
+  .recetas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    padding: 2rem 1rem;
+  }
+}
