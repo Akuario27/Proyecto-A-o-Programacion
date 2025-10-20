@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar Sesión</title>
+  <style>
+    body {
+      background-color: #f5f5dc;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ea4343;
+      color: white;
+      padding: 20px;
+      border-bottom: 2px solid black;
+    }
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      display: inline-block;
+      margin-top: 100px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    input {
+      margin: 10px;
+      padding: 10px;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #ea4343;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d32f2f;
+    }
+    p {
+      margin-top: 15px;
+    }
+    a {
+      color: #ea4343;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Recetas De La Casa De Olivo</h1>
+  </header>
+
+  <main>
+    <h2>Iniciar Sesión</h2>
+    <form action="/backend/login.php" method="POST">
+  <input type="email" name="correo" placeholder="Correo" required>
+  <input type="password" name="contraseña" placeholder="Contraseña" required>
+  <button type="submit">Ingresar</button>
+</form>
+
+    <p>¿No tienes cuenta? <a href="/frontend/register.html">Regístrate aquí</a></p>
+  </main>
+
+  <footer>
+    <p style="margin-top: 50px;">&copy; 2025 Recetas De La Casa De Olivo</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('loginForm');
+
+    // Capturamos la página a la que quería ir el usuario antes de logearse
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectPage = urlParams.get('redirect'); // ejemplo: "foro.html" o "index.html"
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      const email = form.email.value;
+      const password = form.password.value;
+
+      // Aquí normalmente iría tu PHP con fetch/ajax o el submit real
+      // Simulamos login exitoso:
+      // Guardamos que el usuario está logueado en localStorage
+      localStorage.setItem('usuario', email);
+
+      // Redirigir a la página deseada o al inicio por defecto
+      if(redirectPage){
+        window.location.href = redirectPage;
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>
+

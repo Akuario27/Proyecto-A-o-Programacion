@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cerrar Sesión</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5dc;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    .logout-box {
+      display: inline-block;
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      color: #b22222;
+    }
+
+    button {
+      background-color: #ea4343;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #d32f2f;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-box">
+    <h2>¿Deseas cerrar sesión?</h2>
+    <p>Al cerrar sesión serás redirigido a la página principal.</p>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  <script>
+    function cerrarSesion() {
+      // Simula la eliminación de sesión y redirige
+      alert("Has cerrado sesión exitosamente.");
+      window.location.href = "/proyecto anual programacion/index.html"; 
+    }
+  </script>
+</body>
+</html>
