@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recetas de la Abuela | Casa de Olivo</title>
+  <link rel="stylesheet" href="/frontend/style.css">
+
+  <style>
+    :root {
+      --rojo: #ea4343;
+      --rojo-oscuro: #b31d1d;
+      --crema: #f5f5dc;
+      --blanco: #ffffff;
+      --texto: #333;
+      --sombra: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --transicion: all 0.3s ease;
+    }
+
+    body {
+      background-color: var(--crema);
+      font-family: "Poppins", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    /* ====== HEADER ====== */
+    header {
+      background: linear-gradient(135deg, var(--rojo), var(--rojo-oscuro));
+      color: var(--blanco);
+      border-bottom: 3px solid black;
+      box-shadow: var(--sombra);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .header-text {
+      text-align: left;
+    }
+
+    header h1 {
+      margin: 0 0 5px 0;
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    header h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 300;
+      color: #ffeaea;
+    }
+
+    /* ====== NAV ====== */
+    nav {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .menu-item {
+      position: relative;
+    }
+
+    nav button {
+      background-color: var(--blanco);
+      color: var(--rojo);
+      border: 2px solid var(--blanco);
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transicion);
+    }
+
+    nav button:hover {
+      background-color: var(--rojo);
+      color: var(--blanco);
+      transform: translateY(-2px);
+      box-shadow: var(--sombra);
+    }
+
+    /* ====== SUBMENÚ ====== */
+    .submenu {
+      position: absolute;
+      top: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--blanco);
+      border-radius: 12px;
+      box-shadow: var(--sombra);
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transicion);
+      min-width: 200px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .submenu a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: var(--rojo);
+      font-weight: 500;
+      transition: var(--transicion);
+    }
+
+    .submenu a:hover {
+      background-color: var(--rojo);
+      color: var(--blanco);
+      border-radius: 8px;
+    }
+
+    .menu-item:hover .submenu {
+      opacity: 1;
+      visibility: visible;
+      top: 100%;
+    }
+
+    /* ====== MAIN ====== */
+    main {
+      padding: 40px 20px;
+    }
+
+    main h2 {
+      color: var(--rojo);
+      font-size: 26px;
+      margin-bottom: 25px;
+    }
+
+    .recetas-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0;
+      gap: 25px;
+    }
+
+    .receta-card {
+      background: var(--blanco);
+      border-radius: 15px;
+      box-shadow: var(--sombra);
+      width: 300px;
+      text-align: center;
+      padding: 15px;
+      transition: var(--transicion);
+    }
+
+    .receta-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .receta-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .receta-card h3 {
+      margin: 10px 0 5px 0;
+      color: var(--rojo);
+    }
+
+    .receta-card p {
+      font-size: 14px;
+      color: var(--texto);
+    }
+
+    /* ====== FOOTER ====== */
+    footer {
+      margin-top: 40px;
+      padding: 25px;
+      background-color: var(--rojo);
+      color: var(--blanco);
+      border-top: 3px solid black;
+      text-align: center;
+      font-weight: 500;
+      box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 15px;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .submenu {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        box-shadow: none;
+        border: none;
+        background: none;
+        display: none;
+      }
+
+      .menu-item:hover .submenu {
+        display: block;
+      }
+
+      nav button {
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-text">
+      <h1>Recetas de la Abuela</h1>
+      <h2>Sabores que nos devuelven a la infancia</h2>
+    </div>
+
+    <nav>
+      <div class="menu-item">
+        <button>Inicio</button>
+        <div class="submenu">
+          <a href="/frontend/index.html" target="_blank">Página principal</a>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        <button>Recetas</button>
+        <div class="submenu">
+          <a href="/frontend/Recetas.html" target="_blank">Todas las recetas</a>
+          
+        </div>
+      </div>
+
+      <div class="menu-item">
+        <button>Foro</button>
+        <div class="submenu">
+          <a href="/frontend/forounificado.html" target="_blank">Comunidad</a>
+        </div>
+      </div>
+
+      <div class="menu-item">
+        <button>Cuenta</button>
+        <div class="submenu">
+          <a href="/frontend/register.html" target="_blank">Registrarse</a>
+          <a href="/frontend/login.html" target="_blank">Iniciar sesión</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Las joyas de la cocina tradicional</h2>
+
+    <section class="recetas-container">
+      <article class="receta-card">
+        <img src="https://i.pinimg.com/736x/9c/e9/38/9ce93820e5cd2c22ce1c7d3ce4a869e0.jpg" alt="Puchero casero">
+        <h3>Puchero Casero</h3>
+        <p>Un plato lleno de recuerdos, con carnes, verduras y mucho sabor de hogar.</p>
+      </article>
+
+      <article class="receta-card">
+        <img src="https://cdn0.recetasgratis.net/es/posts/4/8/2/guiso_de_lentejas_74284_orig.jpg" alt="Guiso de lentejas">
+        <h3>Guiso de Lentejas</h3>
+        <p>El clásico de los inviernos: nutritivo, caliente y lleno de energía.</p>
+      </article>
+
+      <article class="receta-card">
+        <img src="https://cdn3.myrealfood.app/s3-myrealfood/recipes/GqRztdq3hJ9Kt9DM9kd8/main_0_1681317140602.jpg" alt="Rosquillas de anís">
+        <h3>Rosquillas de Anís</h3>
+        <p>Dulces caseros que acompañaban las tardes con mate o café.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Recetas de la Casa de Olivo — Sabores que unen generaciones.</p>
+  </footer>
+</body>
+</html>

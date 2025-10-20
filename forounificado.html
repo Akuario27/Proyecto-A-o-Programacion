@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Foros — Casa de Olivo</title>
+  <style>
+    :root{
+      --bg: #f2f2ee;           /* gris cálido solicitado */
+      --red: #ea4343;
+      --red-dark: #b31d1d;
+      --card: #ffffff;
+      --muted: #6b6b6b;
+      --shadow: 0 8px 24px rgba(0,0,0,0.08);
+      --radius: 12px;
+      --gap: 18px;
+      --trans: 220ms ease;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#222}
+    .site {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:28px;
+      gap:20px;
+    }
+
+    .container {
+      width:100%;
+      max-width:1100px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.98), var(--card));
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+    }
+
+    /* Header */
+    header.top {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+    }
+    .brand {
+      display:flex;
+      gap:14px;
+      align-items:center;
+    }
+    .logo {
+      width:56px;height:56px;border-radius:10px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, var(--red), var(--red-dark));
+      color:white;font-weight:700;font-size:20px;box-shadow:0 6px 14px rgba(0,0,0,0.12);
+    }
+    .titles h1{margin:0;font-size:20px}
+    .titles p{margin:2px 0 0 0;color:var(--muted);font-size:13px}
+
+    /* Tabs */
+    nav.tabs {
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tab-btn {
+      background:transparent;
+      border:2px solid transparent;
+      padding:10px 16px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:650;
+      transition:all var(--trans);
+      color:var(--muted);
+    }
+    .tab-btn:hover{ transform:translateY(-3px) }
+    .tab-btn.active {
+      background: linear-gradient(90deg,var(--red),var(--red-dark));
+      color:white;
+      box-shadow:0 6px 16px rgba(0,0,0,0.12);
+      border-color: rgba(0,0,0,0.04);
+    }
+
+    /* Content layout */
+    .content {
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:24px;
+    }
+
+    @media (max-width: 920px){
+      .content{ grid-template-columns: 1fr; }
+    }
+
+    /* Main panel (left) */
+    .panel {
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.04);
+      min-height:200px;
+    }
+
+    .panel h2{ margin:0 0 12px 0; color:var(--red) }
+
+    form.row {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    input[type="text"], textarea, input[type="file"]{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid #ddd;
+      font-size:14px;
+      resize:vertical;
+      transition:box-shadow .18s ease, border-color .18s ease;
+      background:#fbfbfb;
+    }
+    input[type="text"]:focus, textarea:focus {
+      outline:none; box-shadow:0 6px 18px rgba(234,67,67,0.08); border-color:rgba(234,67,67,0.25);
+    }
+
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 16px;
+      background:var(--red);
+      color:white;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      transition: all var(--trans);
+    }
+    .btn.secondary {
+      background:linear-gradient(90deg,#ffd27f,#f4b24f);
+      color:#222;
+    }
+    .btn.ghost {
+      background:transparent;color:var(--red);border:1px solid rgba(0,0,0,0.06);
+    }
+
+    /* Right column (sidebar) with list of posts */
+    .sidebar {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .list {
+      background: linear-gradient(180deg, #fff, #fbfbfb);
+      border-radius:12px;
+      padding:12px;
+      box-shadow:0 6px 14px rgba(0,0,0,0.04);
+      max-height:520px;
+      overflow:auto;
+    }
+
+    .post {
+      display:flex;
+      gap:12px;
+      padding:12px;
+      border-radius:10px;
+      background:linear-gradient(180deg, #fff, #fbfbfb);
+      border:1px solid rgba(0,0,0,0.03);
+      margin-bottom:10px;
+      align-items:flex-start;
+    }
+    .post img.thumb { width:72px;height:56px;object-fit:cover;border-radius:8px;border:1px solid #eee }
+    .post .meta { flex:1 }
+    .post h4 { margin:0 0 6px 0; font-size:15px; color: #222 }
+    .post p { margin:0;color:var(--muted);font-size:13px;line-height:1.35 }
+
+    .post .actions { display:flex; gap:8px; flex-shrink:0 }
+    .small { font-size:13px;padding:6px 8px;border-radius:8px;cursor:pointer;border:none }
+    .small.del { background:#ffecec;color:var(--red);border:1px solid rgba(234,67,67,0.08) }
+
+    /* Empty state */
+    .empty { padding:18px;border-radius:12px;background:#fff;border:1px dashed #eee;color:var(--muted);text-align:center }
+
+    /* Utilities */
+    .row-flex { display:flex;gap:10px;align-items:center }
+    .muted { color:var(--muted); font-size:13px }
+    .spacer { height:6px }
+
+    /* Footer */
+    footer{ text-align:center;color:var(--muted); font-size:13px; margin-top:6px }
+
+    /* Smooth hide/show */
+    .hidden { display:none !important }
+  </style>
+</head>
+<body>
+  <div class="site">
+    <div class="container" role="application" aria-labelledby="appTitle">
+
+      <header class="top" role="banner">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">R</div>
+          <div class="titles">
+            <h1 id="appTitle">Casa de Olivo — Foros</h1>
+            <p>Recetas — Tradición — Consejos</p>
+          </div>
+        </div>
+
+        <nav class="tabs" role="tablist" aria-label="Foros">
+          <button class="tab-btn active" data-tab="recetas" role="tab" aria-selected="true">Recetas</button>
+          <button class="tab-btn" data-tab="abuela" role="tab" aria-selected="false">Recetas de la Abuela</button>
+          <button class="tab-btn" data-tab="consejos" role="tab" aria-selected="false">Consejos</button>
+        </nav>
+      </header>
+
+      <div class="content" role="main">
+
+        <!-- LEFT: Forms & feed -->
+        <section class="panel" id="panel-main">
+
+          <!-- RECETAS -->
+          <div id="section-recetas" class="section">
+            <h2>Agregar nueva receta</h2>
+            <form id="form-recetas" class="row" aria-label="Formulario recetas">
+              <label>
+                <div class="muted">Nombre de la receta</div>
+                <input type="text" id="r-nombre" required placeholder="Ej: Pollo al horno con papas">
+              </label>
+
+              <label>
+                <div class="muted">Ingredientes</div>
+                <textarea id="r-ingredientes" required placeholder="Ej: pollo, papas, sal, pimienta"></textarea>
+              </label>
+
+              <label>
+                <div class="muted">Preparación</div>
+                <textarea id="r-preparacion" required placeholder="Describe pasos..."></textarea>
+              </label>
+
+              <label>
+                <div class="muted">Imagen (opcional)</div>
+                <input id="r-imagen" type="file" accept="image/*">
+              </label>
+
+              <div class="row-flex">
+                <button class="btn" type="submit">Publicar receta</button>
+                <button class="btn ghost" type="button" id="clear-recetas">Borrar todas</button>
+              </div>
+            </form>
+
+            <div id="feed-recetas" class="spacer"></div>
+          </div>
+
+          <!-- ABUELA -->
+          <div id="section-abuela" class="section hidden">
+            <h2>Agregar receta de la abuela</h2>
+            <form id="form-abuela" class="row" aria-label="Formulario recetas de la abuela">
+              <label>
+                <div class="muted">Nombre de la receta</div>
+                <input type="text" id="a-nombre" required placeholder="Ej: Puchero casero">
+              </label>
+
+              <label>
+                <div class="muted">Ingredientes</div>
+                <textarea id="a-ingredientes" required placeholder="Ej: carne, verduras, etc."></textarea>
+              </label>
+
+              <label>
+                <div class="muted">Preparación / Historia</div>
+                <textarea id="a-preparacion" required placeholder="Cuenta la historia si quieres..."></textarea>
+              </label>
+
+              <label>
+                <div class="muted">Imagen (opcional)</div>
+                <input id="a-imagen" type="file" accept="image/*">
+              </label>
+
+              <div class="row-flex">
+                <button class="btn" type="submit">Publicar receta de la abuela</button>
+                <button class="btn ghost" type="button" id="clear-abuela">Borrar todas</button>
+              </div>
+            </form>
+
+            <div id="feed-abuela" class="spacer"></div>
+          </div>
+
+          <!-- CONSEJOS -->
+          <div id="section-consejos" class="section hidden">
+            <h2>Comparte un consejo</h2>
+            <form id="form-consejos" class="row" aria-label="Formulario consejos">
+              <label>
+                <div class="muted">Tu nombre</div>
+                <input type="text" id="c-usuario" required placeholder="Ej: MartaCocina">
+              </label>
+
+              <label>
+                <div class="muted">Consejo</div>
+                <textarea id="c-mensaje" required placeholder="Comparte un tip, truco o recomendación..."></textarea>
+              </label>
+
+              <div class="row-flex">
+                <button class="btn" type="submit">Publicar consejo</button>
+                <button class="btn ghost" type="button" id="clear-consejos">Borrar todos</button>
+              </div>
+            </form>
+
+            <div id="feed-consejos" class="spacer"></div>
+          </div>
+
+        </section>
+
+        <!-- RIGHT: Sidebar lists (quick view) -->
+        <aside class="sidebar" aria-label="Publicaciones recientes">
+          <div class="panel">
+            <h3 style="margin:0 0 8px 0">Publicaciones recientes</h3>
+            <div class="list" id="list-recent">
+              <!-- dinámico -->
+            </div>
+            <div style="margin-top:10px" class="muted">Puedes eliminar publicaciones desde cada sección.</div>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-direction:column">
+            <div class="panel" style="padding:12px;">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="muted">Almacenamiento</div>
+                <div id="storage-count" class="muted">0 items</div>
+              </div>
+              <div style="margin-top:10px;color:var(--muted);font-size:13px">
+                Los foros se guardan localmente en tu navegador (localStorage). Las publicaciones no se envían a servidores.
+              </div>
+            </div>
+
+            <div class="panel" style="padding:12px;display:flex;gap:8px;align-items:center;justify-content:center">
+              <button class="btn ghost" id="export-data">Exportar JSON</button>
+              <button class="btn ghost" id="import-data">Importar JSON</button>
+            </div>
+          </div>
+
+        </aside>
+      </div>
+
+      <footer>
+        © 2025 Casa de Olivo — Foros · Datos locales (localStorage)
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    /* ---------------------------
+       CLAVES DE localStorage
+       --------------------------- */
+    const KEY_RECETAS = 'forum_recetas';
+    const KEY_ABUELA = 'forum_abuela';
+    const KEY_CONSEJOS = 'forum_consejos';
+
+    /* ---------------------------
+       UTILIDADES DOM
+       --------------------------- */
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+    // Tabs
+    const tabs = $$('.tab-btn');
+    const sections = {
+      recetas: $('#section-recetas'),
+      abuela: $('#section-abuela'),
+      consejos: $('#section-consejos')
+    };
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(t=>{ t.classList.remove('active'); t.setAttribute('aria-selected','false') });
+        btn.classList.add('active'); btn.setAttribute('aria-selected','true');
+
+        // show section
+        const tab = btn.dataset.tab;
+        Object.keys(sections).forEach(k => {
+          if(k === tab) sections[k].classList.remove('hidden');
+          else sections[k].classList.add('hidden');
+        });
+        renderRecent(); // update sidebar preview
+      });
+    });
+
+    /* ---------------------------
+       DATOS: leer / escribir localStorage
+       --------------------------- */
+    function load(key){ try{ return JSON.parse(localStorage.getItem(key)) || []; } catch(e){ return []; } }
+    function save(key, arr){ localStorage.setItem(key, JSON.stringify(arr)); updateStorageCount(); }
+
+    function updateStorageCount(){
+      const total = load(KEY_RECETAS).length + load(KEY_ABUELA).length + load(KEY_CONSEJOS).length;
+      $('#storage-count').textContent = `${total} items`;
+    }
+
+    /* ---------------------------
+       RENDERERS
+       --------------------------- */
+    function renderFeed(key, containerId, type){
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      const items = load(key);
+      if(!items.length){
+        container.innerHTML = '<div class="empty">No hay publicaciones aún.</div>';
+        return;
+      }
+
+      // render each item (newest first)
+      items.forEach((it, idx) => {
+        const card = document.createElement('div');
+        card.className = 'post';
+        const imgHtml = it.img ? `<img class="thumb" src="${it.img}" alt="${escapeHtml(it.title||'imagen')}">` : '';
+        const titleHtml = it.title ? `<h4>${escapeHtml(it.title)}</h4>` : '';
+        const bodyHtml = (it.subtitle? `<p>${escapeHtml(it.subtitle)}</p>` : '');
+        const actions = document.createElement('div');
+        actions.className = 'actions';
+
+        // delete button
+        const del = document.createElement('button');
+        del.className = 'small del';
+        del.textContent = 'Eliminar';
+        del.addEventListener('click', ()=>{
+          if(!confirm('¿Eliminar esta publicación?')) return;
+          const arr = load(key);
+          arr.splice(idx,1);
+          save(key, arr);
+          renderAll();
+        });
+
+        // assemble
+        card.innerHTML = imgHtml + '<div class="meta">' + titleHtml + bodyHtml + '</div>';
+        actions.appendChild(del);
+        card.appendChild(actions);
+        container.appendChild(card);
+      });
+    }
+
+    function renderRecent(){
+      const list = $('#list-recent');
+      list.innerHTML = '';
+      // combine latest 6 items from each
+      const r = load(KEY_RECETAS).slice(0,4);
+      const a = load(KEY_ABUELA).slice(0,4);
+      const c = load(KEY_CONSEJOS).slice(0,6);
+
+      const combined = [
+        ...r.map(it=>({type:'Receta', title:it.title, subtitle: it.subtitle, img:it.img})),
+        ...a.map(it=>({type:'Abuela', title:it.title, subtitle: it.subtitle, img:it.img})),
+        ...c.map(it=>({type:'Consejo', title:it.title, subtitle: it.subtitle }))
+      ].slice(0,8);
+
+      if(!combined.length){
+        list.innerHTML = '<div class="empty">Sin publicaciones recientes.</div>';
+        return;
+      }
+
+      combined.forEach(item=>{
+        const node = document.createElement('div');
+        node.className = 'post';
+        const img = item.img ? `<img class="thumb" src="${item.img}" alt="">` : '';
+        const title = `<h4>${escapeHtml(item.title || item.subtitle || item.type)}</h4>`;
+        const sub = item.subtitle ? `<p>${escapeHtml(item.subtitle)}</p>` : `<p class="muted">${escapeHtml(item.type)}</p>`;
+        node.innerHTML = img + `<div class="meta">${title}${sub}</div>`;
+        list.appendChild(node);
+      });
+    }
+
+    function renderAll(){
+      renderFeed(KEY_RECETAS,'feed-recetas','recetas');
+      renderFeed(KEY_ABUELA,'feed-abuela','abuela');
+      renderFeed(KEY_CONSEJOS,'feed-consejos','consejos');
+      renderRecent();
+      updateStorageCount();
+    }
+
+    /* ---------------------------
+       ESCAPE HTML
+       --------------------------- */
+    function escapeHtml(s){
+      if(!s && s !== 0) return '';
+      return String(s)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+    }
+
+    /* ---------------------------
+       FORM HANDLERS
+       --------------------------- */
+
+    // Helper to read image file as dataURL (returns Promise)
+    function readImageAsDataURL(file){
+      return new Promise((res, rej)=>{
+        const fr = new FileReader();
+        fr.onload = ()=> res(fr.result);
+        fr.onerror = ()=> rej();
+        fr.readAsDataURL(file);
+      });
+    }
+
+    // RECETAS
+    $('#form-recetas').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const title = $('#r-nombre').value.trim();
+      const ing = $('#r-ingredientes').value.trim();
+      const prep = $('#r-preparacion').value.trim();
+      const file = $('#r-imagen').files[0];
+
+      let img = '';
+      if(file) {
+        try { img = await readImageAsDataURL(file); } catch(e){ img = ''; }
+      }
+
+      const arr = load(KEY_RECETAS);
+      arr.unshift({ title, subtitle: 'Ingredientes: '+ing, body: prep, img, created: Date.now() });
+      save(KEY_RECETAS, arr);
+      $('#form-recetas').reset();
+      renderAll();
+      // navigate to recetas tab view
+      activateTab('recetas');
+    });
+
+    // ABUELA
+    $('#form-abuela').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const title = $('#a-nombre').value.trim();
+      const ing = $('#a-ingredientes').value.trim();
+      const prep = $('#a-preparacion').value.trim();
+      const file = $('#a-imagen').files[0];
+
+      let img = '';
+      if(file) {
+        try { img = await readImageAsDataURL(file); } catch(e){ img = ''; }
+      }
+
+      const arr = load(KEY_ABUELA);
+      arr.unshift({ title, subtitle: 'Ingredientes: '+ing, body: prep, img, created: Date.now() });
+      save(KEY_ABUELA, arr);
+      $('#form-abuela').reset();
+      renderAll();
+      activateTab('abuela');
+    });
+
+    // CONSEJOS
+    $('#form-consejos').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const user = $('#c-usuario').value.trim();
+      const msg = $('#c-mensaje').value.trim();
+      if(!user || !msg) return;
+      const arr = load(KEY_CONSEJOS);
+      arr.unshift({ title: user, subtitle: msg, created: Date.now() });
+      save(KEY_CONSEJOS, arr);
+      $('#form-consejos').reset();
+      renderAll();
+      activateTab('consejos');
+    });
+
+    /* ---------------------------
+       CLEAR / DELETE FUNCTIONS
+       --------------------------- */
+    $('#clear-recetas').addEventListener('click', ()=>{
+      if(!confirm('Borrar todas las recetas?')) return;
+      save(KEY_RECETAS, []);
+      renderAll();
+    });
+
+    $('#clear-abuela').addEventListener('click', ()=>{
+      if(!confirm('Borrar todas las recetas de la abuela?')) return;
+      save(KEY_ABUELA, []);
+      renderAll();
+    });
+
+    $('#clear-consejos').addEventListener('click', ()=>{
+      if(!confirm('Borrar todos los consejos?')) return;
+      save(KEY_CONSEJOS, []);
+      renderAll();
+    });
+
+    /* ---------------------------
+       TAB HELPERS
+       --------------------------- */
+    function activateTab(key){
+      const btn = tabs.find(t => t.dataset.tab === key);
+      if(btn) btn.click();
+    }
+
+    /* ---------------------------
+       EXPORT / IMPORT JSON
+       --------------------------- */
+    $('#export-data').addEventListener('click', ()=>{
+      const data = {
+        recetas: load(KEY_RECETAS),
+        abuela: load(KEY_ABUELA),
+        consejos: load(KEY_CONSEJOS),
+        exportedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'casa-de-olivo-foros.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    $('#import-data').addEventListener('click', ()=>{
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json';
+      input.onchange = e => {
+        const f = e.target.files[0];
+        if(!f) return;
+        const fr = new FileReader();
+        fr.onload = ()=> {
+          try {
+            const data = JSON.parse(fr.result);
+            if(Array.isArray(data.recetas)) save(KEY_RECETAS, data.recetas);
+            if(Array.isArray(data.abuela)) save(KEY_ABUELA, data.abuela);
+            if(Array.isArray(data.consejos)) save(KEY_CONSEJOS, data.consejos);
+            renderAll();
+            alert('Importación completada.');
+          } catch(err){
+            alert('Archivo inválido.');
+          }
+        };
+        fr.readAsText(f);
+      };
+      input.click();
+    });
+
+    /* ---------------------------
+       Inicialización
+       --------------------------- */
+    function init(){
+      // if no data, create empty arrays
+      if(!localStorage.getItem(KEY_RECETAS)) save(KEY_RECETAS, []);
+      if(!localStorage.getItem(KEY_ABUELA)) save(KEY_ABUELA, []);
+      if(!localStorage.getItem(KEY_CONSEJOS)) save(KEY_CONSEJOS, []);
+      renderAll();
+      // default tab already active in markup
+    }
+
+    // initial render functions (feed rendering uses index order).
+    function feedHtmlFromItem(it){
+      // used by renderFeed - already built inline
+    }
+
+    init();
+  </script>
+<form action="/backend/guardar_consejo.php" method="POST">
+  <textarea name="consejo" placeholder="Escribe tu consejo..." required></textarea>
+  <button type="submit">Publicar</button>
+</form>
+<div id="lista-consejos"></div>
+
+<script>
+fetch('/backend/obtener_consejos.php')
+  .then(r => r.json())
+  .then(data => {
+    const cont = document.getElementById('lista-consejos');
+    cont.innerHTML = data.map(c => `
+      <div class="consejo">
+        <h3>${c.nombre_usuario}</h3>
+        <p>${c.consejo}</p>
+        <small>${c.fecha_publicacion}</small>
+      </div>
+    `).join('');
+  });
+</script>
+
+
+
+</body>
+</html>
